@@ -42,7 +42,7 @@ class ResponcePaginationMemes(BaseModel):
     limit: int
     offset: int
 
-class ResponceUpdateUsers(BaseModel):
+class ResponceUpdateMemes(BaseModel):
     success: bool
     error: str | None
     data: UpdateMemes

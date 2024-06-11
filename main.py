@@ -83,7 +83,7 @@ def search_memes(req:RequestUpdateMemes,id: int):
             new_data_memes = UpdateMemes(data=req.data,description_memes=req.description_memes)
             return JSONResponse(
             status_code=status.HTTP_201_CREATED, 
-            content= ResponceUpdateUsers(success = True,error="",data = new_data_memes))
+            content= ResponceUpdateMemes(success = True,error="",data = new_data_memes))
 
 @app.delete("/memes_delete")
 def delete_memes(id: int):
