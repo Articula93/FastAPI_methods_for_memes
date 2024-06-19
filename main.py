@@ -35,9 +35,7 @@ def add_picture(req:RequestDataMemes):
         session.add(create_memes)
         session.commit()
 
-
         return ResponceDataMemes(success = True,error="", data = create_data_memes_in_db(create_memes))
-
 
 @app.get("/memes")
 def list_memes(limit: int, offset: int):
@@ -77,10 +75,15 @@ def search_memes(req:RequestUpdateMemes,id: int):
                 status_code=status.HTTP_404_NOT_FOUND, 
                 content={"message": "Мема с таким id не существует"})
         else:
-            update_memes.name_memes = req.data
+            decode_data = base64.b64decode(req.data)
+            generate_name_memes = f"{base64.urlsafe_b64encode(random.randbytes(30))}"
+            file = open(generate_name_memes, "wb")
+            file.write(decode_data)
+            file.close()
+            update_memes.name_memes = generate_name_memes
             update_memes.description_memes = req.description_memes
             session.commit()
-            new_data_memes = UpdateMemes(data=req.data,description_memes=req.description_memes)
+            new_data_memes = UpdateMemes(data=generate_name_memes,description_memes=req.description_memes)
             return JSONResponse(
             status_code=status.HTTP_201_CREATED, 
             content= ResponceUpdateMemes(success = True,error="",data = new_data_memes))
