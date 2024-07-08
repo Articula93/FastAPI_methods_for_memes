@@ -10,9 +10,7 @@ class RequestAddImg(BaseModel):
     data: str
 
 class RequestUpdatePictures(BaseModel):
-    name: str
     data: str
-
 
 class ReceiptDataPictures(BaseModel):
     data: str
@@ -21,7 +19,6 @@ class PicturesFromBucket(BaseModel):
     name: str
     data: str
 
-
 def create_data_pictures(data_pictures):
     data = ReceiptDataPictures(data=data_pictures.data)
     return data
@@ -29,16 +26,17 @@ def create_data_pictures(data_pictures):
 def data_pictures_from_bucket(data_pictures):
     data = PicturesFromBucket(name=data_pictures.name, data=data_pictures.data)
     return data
-     
-
 
 class ResponceDataPictures(BaseModel):
     success: bool
+    error: str | None = None
+    data: str | None = None
+
+class ResponceDeletePictures(BaseModel):
+    success: bool
+    error: str | None = None
+    data: str | None = None
+
+class ResponceResultImg(BaseModel):
+    success: bool
     error: str | None
-    data: str
-
-
-class ResponcePaginationPictures(BaseModel):
-    success:bool
-    error:str
-    picture_list:List[PicturesFromBucket]

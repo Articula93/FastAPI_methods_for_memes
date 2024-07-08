@@ -16,11 +16,12 @@ connection_string = "mysql+pymysql://root:mechanix93@localhost/fastapi_db_memes"
 engine = create_engine(connection_string)
 Session = sessionmaker(bind=engine)
 
-class MemesList(Base):
-    __tablename__ = "memes_list"
+class Mem(Base):
+    __tablename__ = "memes"
     id_memes = Column(Integer)
     name_memes = Column(String(100))
     description_memes = Column(String(250))
+    format_pictures = Column(String(10))
     __table_args__ = (PrimaryKeyConstraint(id_memes), {},)
 
 Base.metadata.create_all(engine)
