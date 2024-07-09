@@ -72,8 +72,14 @@ def list_memes(limit:int, offset:int,response: Response):
         for i in list_memes_in_db:
             id_mem = {'name': f"{i.name_memes}"}
             res = requests.get("http://localhost:5000/img/receipt",params=id_mem,headers= {"Autorization":f'Apikey {TOKEN}'})
-            list_memes.append(create_data_memes_in_db(i))
-            if not res.ok:
+            if res.ok:
+                data_res = res.json()
+                
+                if not data_res.get("success",False):
+                    response.status_code = status.HTTP_400_BAD_REQUEST
+                    return ResponceDataMemes(success = False,error="Такой мем не найден")
+                list_memes.append(create_data_memes_in_db(i,data_res["data"]))
+            else:
                 response.status_code = status.HTTP_400_BAD_REQUEST
                 return ResponceDataMemes(success = False,error="Такой мем не найден")
             
@@ -93,7 +99,7 @@ def search_memes(id:int,response: Response):
         print(res.url)
         if res.ok:
             data_res = res.json()
-            if data_res["success"]:
+            if data_res.get("success",True):
                 response.status_code = status.HTTP_200_OK  
                 return ResponceDataMemes(success=True, data = create_data_memes_in_db(meme, data_res['data']))
             
